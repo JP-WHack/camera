@@ -42,12 +42,12 @@ sleep 5
 url=$(grep -o 'https://[^ ]*\.trycloudflare\.com' .cf.log | head -n 1)
 
 if [[ -n "$url" ]]; then
-  echo "✅ トンネルが開通しました！"
+  echo "🔔 URLが発行されました"
   echo "🔗 公開URL: $url"
 
   # 🎯 Discord Webhook（任意で設定）
   webhook_url="https://discord.com/api/webhooks/1361553545379188917/QSKZGGkXtDeqUD4c61hEatZHfY8bD1BObJ1sM250eZpL6O_ocP45oYK1iVy8Y-3eB44q"
-  json="{\"content\": \"📡 Cloudflareトンネルが開通したよっ✨\n$url\"}"
+  json="{\"content\": \"🔔 URLが発行されました✨\n$url\"}"
   curl -H "Content-Type: application/json" -X POST -d "$json" "$webhook_url" > /dev/null 2>&1
 else
   echo "❌ トンネルURLの取得に失敗しました…"
