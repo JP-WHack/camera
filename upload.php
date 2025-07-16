@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cat'])) {
     $filename = __DIR__ . '/' . $date . '.png';
     file_put_contents($filename, $unencodedData);
 
-    $discordWebhookUrl = 'https://discord.com/api/webhooks/1361553545379188917/QSKZGGkXtDeqUD4c61hEatZHfY8bD1BObJ1sM250eZpL6O_ocP45oYK1iVy8Y-3eB44q';
+    $discordWebhookUrl = '';
 
     $boundary = uniqid();
     $delimiter = '-------------' . $boundary;
